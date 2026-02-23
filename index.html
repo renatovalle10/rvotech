@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO Tech | Advanced Ag-Intelligence & Data Science</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --ag-green: #2d5a27;
+            --ag-light: #68bc44;
+            --ag-cream: #fdfbf7;
+            --ndvi-high: #166534;
+            --ndvi-med: #84cc16;
+            --ndvi-low: #eab308;
+            --ndvi-stress: #ef4444;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--ag-cream);
+            scroll-behavior: smooth;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .glass {
+            background: rgba(253, 251, 247, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .agro-mesh {
+            background-image: radial-gradient(var(--ag-green) 0.5px, transparent 0.5px);
+            background-size: 40px 40px;
+            opacity: 0.05;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #2d5a27 0%, #1a2c1a 100%);
+        }
+
+        /* GIS Interface Elements */
+        .gis-container {
+            position: relative;
+            background: #0f172a;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 20;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 10px;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .scanner {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(104, 188, 68, 0.2), transparent);
+            border-bottom: 1px solid var(--ag-light);
+            animation: scanline 6s infinite linear;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        /* NDVI Polygons Styling */
+        .talhao {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            stroke-width: 1;
+            stroke: rgba(255,255,255,0.2);
+        }
+
+        .talhao:hover {
+            stroke-width: 3;
+            stroke: #fff;
+            filter: brightness(1.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal { animation: fadeIn 1s ease-out forwards; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="agro-mesh"></div>
+
+    <!-- Navegação Superior -->
+    <header class="fixed w-full z-50 glass border-b border-green-900/10">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <svg width="45" height="45" viewBox="0 0 100 120" class="drop-shadow-sm">
+                    <path d="M50 10 C20 40 20 70 50 90 C80 70 80 40 50 10" fill="#2d5a27"/>
+                    <path d="M50 10 C35 30 35 60 50 90 C65 60 65 30 50 10" fill="#68bc44"/>
+                    <path d="M50 15 V85" stroke="white" stroke-width="1.5" opacity="0.8"/>
+                    <path d="M50 30 L35 40 M50 45 L65 55 M50 60 L35 75" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="35" cy="40" r="2" fill="white"/>
+                    <circle cx="65" cy="55" r="2" fill="white"/>
+                    <circle cx="35" cy="75" r="2" fill="white"/>
+                    <g stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.6">
+                        <path d="M50 90 L35 105 M50 90 L50 115 M50 90 L65 105"/>
+                    </g>
+                </svg>
+                <div class="leading-none">
+                    <h1 class="text-2xl font-black text-green-900 tracking-tighter uppercase">RVO <span class="text-green-500">Tech</span></h1>
+                    <span class="text-[9px] font-bold tracking-[0.3em] text-stone-500 uppercase">Agricultura de Precisão</span>
+                </div>
+            </div>
+            
+            <nav class="hidden lg:flex items-center gap-10">
+                <a href="#solucoes" class="text-sm font-bold text-stone-600 hover:text-green-600 transition">Sistemas</a>
+                <a href="#ia" class="text-sm font-bold text-stone-600 hover:text-green-600 transition">Ciência de Dados</a>
+                <a href="#contato" class="bg-green-800 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-green-700 transition shadow-lg shadow-green-900/20">
+                    Área Técnica
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center pt-20 px-6 hero-gradient relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-[-20deg] origin-top translate-x-20"></div>
+        
+        <div class="container mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="reveal">
+                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-lg bg-green-400/10 border border-green-400/20 text-green-400 text-xs font-bold mono mb-8">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    Agricultura de Precisão
+                </div>
+                <h2 class="text-6xl lg:text-8xl font-black text-white leading-tight mb-8">
+                    Inteligência <br><span class="text-green-400">no DNA</span> da Terra.
+                </h2>
+                <p class="text-xl text-stone-300 leading-relaxed max-w-xl mb-10">
+                    Projetamos arquiteturas de dados complexas e modelos de IA para transformar hectares em insights acionáveis através de análise espectral de alta resolução.
+                </p>
+                <div class="flex flex-wrap gap-5">
+                    <a href="#solucoes" class="bg-green-500 text-green-950 font-black px-10 py-5 rounded-xl hover:bg-white transition text-lg shadow-2xl">
+                        Explorar Portfólio
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Dashboard Mockup - ANÁLISE DE TALHÕES GIS -->
+            <div class="hidden lg:block reveal" style="animation-delay: 0.2s;">
+                <div class="gis-container shadow-2xl">
+                    <div class="scanner"></div>
+                    
+                    <!-- Top Bar Info -->
+                    <div class="absolute top-0 left-0 w-full p-4 flex justify-between items-center z-20 bg-slate-900/40 border-b border-white/10 backdrop-blur-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            <span class="text-[10px] text-white mono font-bold uppercase tracking-widest">Análise de Talhões | Safra 2024</span>
+                        </div>
+                        <div class="text-[9px] text-slate-400 mono">PROP: FAZ. SANTA HELENA</div>
+                    </div>
+
+                    <!-- SVG Map with Plots (Irregular Polygons) -->
+                    <div class="relative w-full h-[400px] bg-slate-900">
+                        <svg viewBox="0 0 400 300" class="w-full h-full p-8">
+                            <!-- Plot 1: High Vigor (Green) -->
+                            <path class="talhao" d="M20,20 L150,30 L160,120 L40,140 Z" fill="var(--ndvi-high)" />
+                            <text x="70" y="80" fill="white" font-size="8" class="mono opacity-50 pointer-events-none">T-01 (NDVI 0.88)</text>
+
+                            <!-- Plot 2: Medium Vigor (Light Green) -->
+                            <path class="talhao" d="M165,35 L340,50 L360,130 L175,145 Z" fill="var(--ndvi-med)" />
+                            <text x="230" y="90" fill="white" font-size="8" class="mono opacity-50 pointer-events-none">T-02 (NDVI 0.72)</text>
+
+                            <!-- Plot 3: Stress Area (Yellow/Red) -->
+                            <path class="talhao" d="M45,155 L160,155 L165,260 L30,250 Z" fill="var(--ndvi-low)" />
+                            <circle cx="100" cy="200" r="15" fill="var(--ndvi-stress)" class="animate-pulse" opacity="0.6" />
+                            <text x="70" y="210" fill="white" font-size="8" class="mono font-bold pointer-events-none">ANOMALIA DETECTADA</text>
+
+                            <!-- Plot 4: Normal (Mixed Green) -->
+                            <path class="talhao" d="M180,160 L360,150 L380,270 L190,280 Z" fill="var(--ndvi-high)" />
+                            <text x="250" y="220" fill="white" font-size="8" class="mono opacity-50 pointer-events-none">T-04 (NDVI 0.84)</text>
+                        </svg>
+
+                        <!-- Legend Overlay -->
+                        <div class="absolute bottom-4 left-4 z-20 space-y-1.5">
+                            <div class="flex items-center gap-2 text-[8px] text-white uppercase mono">
+                                <span class="w-3 h-3 rounded" style="background: var(--ndvi-high)"></span> Saudável
+                            </div>
+                            <div class="flex items-center gap-2 text-[8px] text-white uppercase mono">
+                                <span class="w-3 h-3 rounded" style="background: var(--ndvi-low)"></span> Atenção
+                            </div>
+                            <div class="flex items-center gap-2 text-[8px] text-white uppercase mono">
+                                <span class="w-3 h-3 rounded" style="background: var(--ndvi-stress)"></span> Estresse Crítico
+                            </div>
+                        </div>
+
+                        <!-- Plot Details Panel -->
+                        <div class="absolute right-4 bottom-4 z-20 w-40 p-3 bg-slate-900/80 border border-white/10 rounded-xl backdrop-blur-md">
+                            <h4 class="text-[9px] text-green-400 font-bold uppercase mb-2 mono tracking-widest">Status Talhão 03</h4>
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-[8px] text-slate-300">
+                                    <span>Umidade:</span><span class="text-white">12.4%</span>
+                                </div>
+                                <div class="flex justify-between text-[8px] text-slate-300">
+                                    <span>Vigor:</span><span class="text-red-400">Baixo</span>
+                                </div>
+                                <div class="flex justify-between text-[8px] text-slate-300">
+                                    <span>Área:</span><span class="text-white">142 ha</span>
+                                </div>
+                            </div>
+                            <div class="mt-2 h-1 w-full bg-slate-700 rounded-full overflow-hidden">
+                                <div class="bg-red-500 h-full w-[35%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Soluções -->
+    <section id="solucoes" class="py-32 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mb-20">
+                <span class="text-green-600 font-black text-sm uppercase tracking-[0.4em] mb-4 block">Core Operacional</span>
+                <h3 class="text-5xl font-black text-green-900 mb-8 tracking-tighter">Trabalhos Realizados com Rigor Científico.</h3>
+                <p class="text-xl text-stone-500 leading-relaxed">Nossa equipe técnica integra sensoriamento remoto, ciência de dados e engenharia de software para resolver os desafios mais complexos do campo.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Mapeamento NDVI -->
+                <div class="bg-stone-50 p-10 rounded-3xl border border-transparent transition-all hover:border-green-600 hover:shadow-xl group">
+                    <div class="w-14 h-14 bg-green-900 text-white rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-green-900/20 group-hover:bg-green-600">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h.5A2.5 2.5 0 0018 9.5V5a2 2 0 00-2-2h-1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="text-2xl font-bold text-green-950 mb-4">Mapeamento Satélite NDVI</h4>
+                    <p class="text-stone-500 leading-relaxed">Análise orbital de bandas espectrais para diagnóstico contínuo de vigor vegetal, identificando anomalias e stress hídrico em escala regional.</p>
+                </div>
+
+                <!-- Análise de Pragas -->
+                <div class="bg-stone-50 p-10 rounded-3xl border border-transparent transition-all hover:border-blue-600 hover:shadow-xl group">
+                    <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-blue-600/20">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                    </div>
+                    <h4 class="text-2xl font-bold text-green-950 mb-4">Análise de Pragas via Satélite</h4>
+                    <p class="text-stone-500 leading-relaxed">Algoritmos proprietários de detecção de assinaturas de calor e reflectância para mapeamento preditivo de infestações bióticas.</p>
+                </div>
+
+                <!-- Software Agro -->
+                <div class="bg-stone-50 p-10 rounded-3xl border border-transparent transition-all hover:border-stone-900 hover:shadow-xl group">
+                    <div class="w-14 h-14 bg-stone-900 text-white rounded-2xl flex items-center justify-center mb-8 shadow-xl">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    <h4 class="text-2xl font-bold text-green-950 mb-4">Software Agro Customizado</h4>
+                    <p class="text-stone-500 leading-relaxed">Desenvolvimento de ecossistemas digitais para automação, integrando telemetria em tempo real e protocolos universais ISOBUS.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deep Tech Section -->
+    <section id="ia" class="py-32 bg-stone-50 border-t border-stone-200">
+        <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+            <div class="space-y-12">
+                <div class="reveal">
+                    <span class="text-green-600 font-black text-xs uppercase tracking-widest mb-4 block">Intelligence Engineering</span>
+                    <h3 class="text-4xl font-black text-green-950 mb-6 tracking-tighter">Ciência de Dados & IA Agrícola</h3>
+                    <p class="text-stone-600 text-lg leading-relaxed mb-8">
+                        Aplicamos a modelagem preditiva avançada sobre Big Data. Cruzamos variáveis edafoclimáticas, séries temporais e dados históricos para projetar safras e otimizar o solo com precisão superior a 98%.
+                    </p>
+                    <div class="grid grid-cols-2 gap-8 mono">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h5 class="text-xs font-bold text-green-900 uppercase mb-1">Deep Learning</h5>
+                            <p class="text-[11px] text-stone-500">Visão computacional para diagnóstico fitossanitário autônomo.</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h5 class="text-xs font-bold text-green-900 uppercase mb-1">Predictive Analytics</h5>
+                            <p class="text-[11px] text-stone-500">Modelos de regressão para estimativa de biomassa e produtividade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal" style="animation-delay: 0.3s;">
+                <div class="bg-slate-900 p-10 rounded-3xl shadow-2xl mono text-sm leading-relaxed overflow-hidden relative border border-white/5">
+                    <div class="flex gap-2 mb-8">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="text-green-400 opacity-60 mb-4">// AGRO_INTELLIGENCE_INIT</div>
+                    <div class="text-stone-400">
+                        <span class="text-blue-400">import</span> agro_ia <span class="text-blue-400">as</span> aia<br>
+                        <span class="text-blue-400">from</span> rvo_tech <span class="text-blue-400">import</span> ModelEngine<br><br>
+                        
+                        <span class="text-stone-500"># Rodando predição de safra</span><br>
+                        model = ModelEngine.load(<span class="text-yellow-400">'prediction_v4.2.h5'</span>)<br>
+                        results = model.run_inference(area_id=<span class="text-yellow-400">'SÃO_PAULO_011'</span>)<br><br>
+                        
+                        <span class="text-stone-500"># Status do Monitoramento</span><br>
+                        print(f<span class="text-yellow-400">"Efficiency_Index: {results.yield_optimization}%"</span>)<br>
+                        <span class="text-green-500">// Deploying variable rate application maps...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contato -->
+    <footer id="contato" class="bg-green-950 text-white py-24">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-16 border-b border-white/10 pb-20 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-4 mb-8">
+                        <svg width="40" height="40" viewBox="0 0 100 120">
+                            <path d="M50 10 C20 40 20 70 50 90 C80 70 80 40 50 10" fill="#68bc44"/>
+                        </svg>
+                        <h4 class="text-3xl font-black tracking-tighter">RVO <span class="text-green-400">Tech</span></h4>
+                    </div>
+                    <p class="text-green-100/60 text-lg leading-relaxed max-w-sm mb-10">
+                        Liderança técnica em engenharia de dados e inteligência artificial aplicada à evolução exponencial do campo brasileiro.
+                    </p>
+                    <div class="text-sm text-green-400 font-mono tracking-widest uppercase">
+                        São Paulo - SP | Brasil
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-green-500 uppercase tracking-widest mb-10">Contato Direto</h5>
+                    <div class="space-y-8">
+                        <div>
+                            <span class="block text-[10px] text-green-500 uppercase font-black mb-1">Responsável Técnico</span>
+                            <span class="text-lg font-bold">Renato Valle de Oliveira</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] text-green-500 uppercase font-black mb-1">Suporte e Engenharia</span>
+                            <span class="text-sm">renato.valle@rvotech.com.br</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] text-green-500 uppercase font-black mb-1">Telefone / WhatsApp</span>
+                            <span class="text-sm font-mono">+55 11 94880-4737</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-green-500 uppercase tracking-widest mb-10">Sede Operacional</h5>
+                    <div class="space-y-2 text-sm text-green-100/70">
+                        <p class="font-bold text-white">RVO Tech Systems</p>
+                        <p>Rua Major Quedinho 111</p>
+                        <p>São Paulo - SP</p>
+                        <p>CEP: 01050-030</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-mono text-green-500 opacity-60 tracking-[0.3em] uppercase">
+                <span>&copy; 2024 RVO Tech | Precision Ag-Intelligence Engineering</span>
+                <span>Todos os Direitos Reservados</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
