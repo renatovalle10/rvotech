@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Pluviômetro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O NOSSO ESTILO CLEAN E CALMO
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; }
+
+        .card-formulario {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+        }
+
+        .grupo-campo { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .grupo-campo label { font-weight: 600; color: #34495e; margin-bottom: 8px; font-size: 14px; }
+        .grupo-campo input, .grupo-campo select, .grupo-campo textarea { padding: 12px 15px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 15px; color: #2c3e50; background-color: #f9fbfd; transition: border-color 0.3s ease; font-family: inherit;}
+        .grupo-campo input:focus, .grupo-campo select:focus, .grupo-campo textarea:focus { outline: none; border-color: #3498db; background-color: #ffffff; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
+        .grupo-campo textarea { resize: vertical; min-height: 80px; }
+
+        .linha-form { display: flex; gap: 20px; }
+        .linha-form .grupo-campo { flex: 1; }
+
+        .secao-form {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eaf2f8;
+            color: #2980b9;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .secao-form i { margin-right: 10px; color: #3498db; }
+
+        .btn-salvar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-salvar:hover { background-color: #219653; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html" class="ativo"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Controle Pluviométrico</h2>
+        <p class="subtitulo">Registro histórico de precipitações para balanço hídrico da safra.</p>
+
+        <div class="card-formulario">
+            <form id="formPluvi">
+                
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="dataChuva">Data da Precipitação</label>
+                        <input type="date" id="dataChuva" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="talhao">Talhão / Estação de Medição</label>
+                        <input type="text" id="talhao" placeholder="Ex: Sede / Talhão 250" required>
+                    </div>
+                </div>
+
+                <div class="secao-form">
+                    <i class="fas fa-tint"></i> Volume e Intensidade
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="volumeMM">Volume Acumulado (mm)</label>
+                        <input type="number" step="0.1" id="volumeMM" placeholder="Ex: 45.5" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="intensidade">Intensidade da Chuva</label>
+                        <select id="intensidade" required>
+                            <option value="">Selecione...</option>
+                            <option value="Garoa / Leve">Garoa / Leve (Até 5 mm/h)</option>
+                            <option value="Moderada">Moderada (5 a 25 mm/h)</option>
+                            <option value="Forte">Forte (25 a 50 mm/h)</option>
+                            <option value="Tempestade">Tempestade (Acima de 50 mm/h)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="observacoes">Observações Climáticas (Opcional)</label>
+                    <textarea id="observacoes" placeholder="Ex: Chuva acompanhada de ventos fortes e pequena queda de granizo na bordadura..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    <i class="fas fa-save"></i> Guardar Registro de Chuva
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('formPluvi').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // Coleta os valores do formulário
+            const dadosPluvi = {
+                dataChuva: document.getElementById('dataChuva').value,
+                talhao: document.getElementById('talhao').value,
+                volumeMM: document.getElementById('volumeMM').value,
+                intensidade: document.getElementById('intensidade').value,
+                observacoes: document.getElementById('observacoes').value || '-'
+            };
+
+            // Salva no 'caderninho' do navegador (localStorage)
+            localStorage.setItem('dadosPluvi', JSON.stringify(dadosPluvi));
+
+            alert("Registro pluviométrico salvo com sucesso! 🌧️💧");
+            
+            // Redireciona de volta para o Dashboard Principal
+            window.location.href = 'index.html'; 
+        });
+    </script>
+</body>
+</html>

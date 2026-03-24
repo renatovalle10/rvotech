@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Lançamento Pré-Plantio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O MESMO ESTILO CLEAN (AZUL CLARO E BRANCO)
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; /* Mais estreito para o formulário ficar elegante */ margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; }
+
+        /* =========================================
+           ESTILOS DO FORMULÁRIO (CLEAN E PROFISSIONAL)
+        ========================================= */
+        .card-formulario {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+        }
+
+        .grupo-campo {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grupo-campo label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .grupo-campo input, .grupo-campo select {
+            padding: 12px 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #2c3e50;
+            background-color: #f9fbfd;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .grupo-campo input:focus, .grupo-campo select:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Divisão do formulário em colunas */
+        .linha-form {
+            display: flex;
+            gap: 20px;
+        }
+        .linha-form .grupo-campo {
+            flex: 1; /* Ocupam o mesmo espaço */
+        }
+
+        /* Botão Salvar */
+        .btn-salvar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-salvar:hover {
+            background-color: #219653;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html" class="ativo"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Lançamento de Pré-Plantio</h2>
+        <p class="subtitulo">Insira as informações de manejo da área antes da semeadura.</p>
+
+        <div class="card-formulario">
+            <form id="formPrePlantio">
+                
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="dataRegistro">Data do Registro</label>
+                        <input type="date" id="dataRegistro" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="talhao">Talhão / Área</label>
+                        <input type="text" id="talhao" placeholder="Ex: Talhão 250" required>
+                    </div>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="sistemaCultivo">Sistema de Cultivo</label>
+                    <select id="sistemaCultivo" required>
+                        <option value="">Selecione...</option>
+                        <option value="Plantio Direto na Palha">Plantio Direto na Palha</option>
+                        <option value="Cultivo Mínimo">Cultivo Mínimo</option>
+                        <option value="Plantio Convencional">Plantio Convencional</option>
+                    </select>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="safraAnterior">Rotatividade (Safra Anterior)</label>
+                    <input type="text" id="safraAnterior" placeholder="Ex: Milho Safrinha / Braquiária" required>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="dessecacao">Manejo de Dessecação Prévia</label>
+                    <input type="text" id="dessecacao" placeholder="Ex: Glifosato + 2,4-D (15 dias antes)" required>
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    <i class="fas fa-save"></i> Salvar e Atualizar Dashboard
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('formPrePlantio').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede a página de recarregar do jeito padrão
+
+            // 1. Coleta os valores que o usuário digitou
+            const dadosParaSalvar = {
+                dataRegistro: document.getElementById('dataRegistro').value,
+                talhao: document.getElementById('talhao').value,
+                sistemaCultivo: document.getElementById('sistemaCultivo').value,
+                safraAnterior: document.getElementById('safraAnterior').value,
+                dessecacao: document.getElementById('dessecacao').value
+            };
+
+            // 2. Converte para texto e salva no 'caderninho' do navegador (localStorage)
+            localStorage.setItem('dadosPrePlantio', JSON.stringify(dadosParaSalvar));
+
+            // 3. Avisa o usuário que deu certo
+            alert("Dados de Pré-Plantio salvos com sucesso! 🚀");
+
+            // 4. Redireciona de volta para o Dashboard para ver a mágica na tabela
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

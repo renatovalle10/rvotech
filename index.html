@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Dashboard Interativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* O NOSSO ESTILO CLEAN DE SEMPRE */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 40px; font-size: 16px; }
+
+        .painel-principal { display: flex; flex-wrap: wrap; gap: 30px; text-align: left; }
+        .coluna-mapas { flex: 1; min-width: 350px; display: flex; flex-direction: column; gap: 20px; }
+        .coluna-dados { flex: 2; min-width: 400px; display: flex; flex-direction: column; gap: 20px; }
+
+        .card-branco { background-color: #ffffff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
+        .card-branco h3 { color: #2c3e50; margin: 0 0 15px 0; font-size: 18px; border-bottom: 2px solid #eaf2f8; padding-bottom: 10px; }
+
+        .img-container { height: 300px; background-color: #f7f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; }
+        .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .tabela-excel { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+        .tabela-excel th, .tabela-excel td { border: 1px solid #bdc3c7; padding: 10px 15px; text-align: left; }
+        .tabela-excel th { background-color: #ecf0f1; color: #2c3e50; font-weight: 600; }
+        .tabela-excel tr:nth-child(even) { background-color: #f9fbfd; } 
+        .tabela-excel tr:hover { background-color: #eaf2f8; } 
+        .tabela-vazia { text-align: center; color: #7f8c8d; font-style: italic; padding: 20px !important; }
+        
+        .fase-badge { background-color: #27ae60; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .alerta-badge { color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+
+        .grafico-container { position: relative; height: 300px; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html" class="ativo"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Painel de Controle da Safra</h2>
+        <p class="subtitulo">Acompanhamento de Dados Dinâmicos - Fazenda Catarinense</p>
+
+        <div class="painel-principal">
+            
+            <div class="coluna-mapas">
+                <div class="card-branco">
+                    <h3><i class="fas fa-satellite"></i> Sensoriamento (NDVI)</h3>
+                    <div class="img-container">
+                        <img src="nvdi1.png" alt="Mapa NDVI">
+                    </div>
+                </div>
+            </div>
+
+            <div class="coluna-dados">
+                
+                <div class="card-branco">
+                    <h3><i class="fas fa-table"></i> Registros de Pré-Plantio</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data</th><th>Talhão</th><th>Sistema Cultivo</th><th>Safra Anterior</th></tr></thead>
+                            <tbody id="corpo-tabela-pre"><tr><td colspan="4" class="tabela-vazia">Nenhum dado cadastrado.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-leaf"></i> Evolução Fenológica (Ciclo)</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data Plantio</th><th>Cultivar</th><th>Estande (Plantas/ha)</th><th>Fase Atual</th></tr></thead>
+                            <tbody id="corpo-tabela-ciclo"><tr><td colspan="4" class="tabela-vazia">Nenhum registro de ciclo.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-flask"></i> Histórico Nutricional</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data</th><th>Correção (Base)</th><th>Adubação (NPK)</th><th>Foliar</th></tr></thead>
+                            <tbody id="corpo-tabela-nutri"><tr><td colspan="4" class="tabela-vazia">Nenhum dado nutricional registrado.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-bug"></i> Sanidade e Manejo (MIP)</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data</th><th>Alvo Principal</th><th>Infestação / Risco</th><th>Ação de Controle</th></tr></thead>
+                            <tbody id="corpo-tabela-mip"><tr><td colspan="4" class="tabela-vazia">Nenhum registro de MIP efetuado.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-cloud-showers-heavy"></i> Controle Pluviométrico</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data</th><th>Talhão / Estação</th><th>Volume (mm)</th><th>Intensidade</th></tr></thead>
+                            <tbody id="corpo-tabela-pluvi"><tr><td colspan="4" class="tabela-vazia">Nenhum registro de chuva efetuado.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-tractor"></i> Telemetria e Máquinas</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-excel">
+                            <thead><tr><th>Data</th><th>Máquina (ID)</th><th>Perda (kg/ha)</th><th>Diagnóstico</th></tr></thead>
+                            <tbody id="corpo-tabela-telemetria"><tr><td colspan="4" class="tabela-vazia">Nenhum registro de máquina efetuado. Vá em 'Máquinas' para preencher.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card-branco">
+                    <h3><i class="fas fa-chart-bar"></i> Estimativa vs Realizado (sc/ha)</h3>
+                    <div class="grafico-container">
+                        <canvas id="meuGrafico"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function carregarTabelaPrePlantio() {
+            const dadosSalvos = localStorage.getItem('dadosPrePlantio');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                document.getElementById('corpo-tabela-pre').innerHTML = `<tr><td>${registro.dataRegistro}</td><td>${registro.talhao}</td><td>${registro.sistemaCultivo}</td><td>${registro.safraAnterior}</td></tr>`;
+            }
+        }
+
+        function carregarTabelaCiclo() {
+            const dadosSalvos = localStorage.getItem('dadosCiclo');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                document.getElementById('corpo-tabela-ciclo').innerHTML = `<tr><td>${registro.dataPlantio}</td><td>${registro.cultivar}</td><td>${registro.estande}</td><td><span class="fase-badge">${registro.faseAtual}</span></td></tr>`;
+            }
+        }
+
+        function carregarTabelaNutricao() {
+            const dadosSalvos = localStorage.getItem('dadosNutricao');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                let correcao = registro.tipoCorrecao !== 'Nenhuma' ? `${registro.tipoCorrecao} (${registro.doseCorrecao} t/ha)` : 'Nenhuma';
+                let npk = `${registro.formulacaoNPK} (${registro.doseNPK} kg/ha)`;
+                let foliar = registro.adubacaoFoliar ? registro.adubacaoFoliar : '-';
+                document.getElementById('corpo-tabela-nutri').innerHTML = `<tr><td>${registro.dataAplicacao}</td><td>${correcao}</td><td>${npk}</td><td>${foliar}</td></tr>`;
+            }
+        }
+
+        function carregarTabelaMIP() {
+            const dadosSalvos = localStorage.getItem('dadosMIP');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                let alvoStr = registro.nomeAlvo !== 'N/A' ? `<strong>${registro.tipoAlvo}</strong><br><span style="font-size: 12px; color: #7f8c8d;">${registro.nomeAlvo}</span>` : `<strong>${registro.tipoAlvo}</strong>`;
+                let corMIP = registro.nivelInfestacao.includes('Alto') ? '#e74c3c' : (registro.nivelInfestacao.includes('Médio') ? '#f39c12' : '#27ae60');
+                let infestacaoBadge = `<span class="alerta-badge" style="background-color: ${corMIP};">${registro.nivelInfestacao}</span>`;
+                document.getElementById('corpo-tabela-mip').innerHTML = `<tr><td>${registro.dataMIP}</td><td>${alvoStr}</td><td>${infestacaoBadge}</td><td>${registro.produtoAplicado}</td></tr>`;
+            }
+        }
+
+        function carregarTabelaPluvi() {
+            const dadosSalvos = localStorage.getItem('dadosPluvi');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                let volumeDestaque = `<span style="color: #3498db; font-weight: bold; font-size: 15px;">${registro.volumeMM} mm</span>`;
+                document.getElementById('corpo-tabela-pluvi').innerHTML = `<tr><td>${registro.dataChuva}</td><td>${registro.talhao}</td><td>${volumeDestaque}</td><td>${registro.intensidade}</td></tr>`;
+            }
+        }
+
+        // A FUNÇÃO DA TELEMETRIA AQUI!
+        function carregarTabelaTelemetria() {
+            const dadosSalvos = localStorage.getItem('dadosTelemetria');
+            if (dadosSalvos) {
+                const registro = JSON.parse(dadosSalvos);
+                
+                // Puxa a cor certa para a etiqueta de perda
+                let corBadge = '#bdc3c7';
+                if (registro.statusPerda === 'IDEAL') corBadge = '#27ae60';
+                else if (registro.statusPerda === 'ATENÇÃO') corBadge = '#f39c12';
+                else if (registro.statusPerda === 'PREJUÍZO ALTO') corBadge = '#e74c3c';
+
+                let diagBadge = `<span class="alerta-badge" style="background-color: ${corBadge};">${registro.statusPerda}</span>`;
+
+                document.getElementById('corpo-tabela-telemetria').innerHTML = `<tr><td>${registro.dataOperacao}</td><td>${registro.idMaquina}</td><td><strong>${registro.perdaKgHa}</strong></td><td>${diagBadge}</td></tr>`;
+            }
+        }
+
+        function desenharGrafico() {
+            let estimativaCalculada = [72, 45, 15]; 
+            const dadosEstimativa = localStorage.getItem('dadosEstimativa');
+            if(dadosEstimativa) {
+                const est = JSON.parse(dadosEstimativa);
+                estimativaCalculada[0] = parseFloat(est.produtividadeSacas);
+            }
+
+            const ctx = document.getElementById('meuGrafico').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Zona Alta', 'Zona Média', 'Zona Baixa'],
+                    datasets: [
+                        { label: 'Estimativa (sc/ha)', data: estimativaCalculada, backgroundColor: '#3498db', borderRadius: 4 },
+                        { label: 'Colheita Realizada', data: [0, 0, 0], backgroundColor: '#2ecc71', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        // CARREGA TODAS AS TABELAS QUANDO A PÁGINA ABRE
+        window.onload = function() {
+            carregarTabelaPrePlantio();
+            carregarTabelaCiclo();
+            carregarTabelaNutricao();
+            carregarTabelaMIP();
+            carregarTabelaPluvi();
+            carregarTabelaTelemetria(); // Chama a telemetria!
+            desenharGrafico();
+        };
+    </script>
+</body>
+</html>

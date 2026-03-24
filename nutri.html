@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Nutrição e Correção</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O MESMO ESTILO CLEAN (AZUL CLARO E BRANCO)
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; }
+
+        .card-formulario {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+        }
+
+        .grupo-campo { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .grupo-campo label { font-weight: 600; color: #34495e; margin-bottom: 8px; font-size: 14px; }
+        .grupo-campo input, .grupo-campo select { padding: 12px 15px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 15px; color: #2c3e50; background-color: #f9fbfd; transition: border-color 0.3s ease; font-family: inherit;}
+        .grupo-campo input:focus, .grupo-campo select:focus { outline: none; border-color: #3498db; background-color: #ffffff; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
+
+        .linha-form { display: flex; gap: 20px; }
+        .linha-form .grupo-campo { flex: 1; }
+
+        /* Estilo para separar seções dentro do formulário */
+        .secao-form {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eaf2f8;
+            color: #2980b9;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .secao-form i { margin-right: 10px; color: #3498db; }
+
+        .btn-salvar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-salvar:hover { background-color: #219653; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html" class="ativo"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Manejo Nutricional do Solo</h2>
+        <p class="subtitulo">Registo de correções de base e adubação para atingir o teto produtivo.</p>
+
+        <div class="card-formulario">
+            <form id="formNutricao">
+                
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="dataAplicacao">Data da Operação</label>
+                        <input type="date" id="dataAplicacao" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="talhao">Talhão Alvo</label>
+                        <input type="text" id="talhao" placeholder="Ex: Talhão 250" required>
+                    </div>
+                </div>
+
+                <div class="secao-form">
+                    <i class="fas fa-layer-group"></i> Correção de Solo (Base)
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="tipoCorrecao">Tipo de Correção</label>
+                        <select id="tipoCorrecao" required>
+                            <option value="">Selecione...</option>
+                            <option value="Calcário Dolomítico">Calcário Dolomítico</option>
+                            <option value="Calcário Calcítico">Calcário Calcítico</option>
+                            <option value="Gesso Agrícola">Gesso Agrícola</option>
+                            <option value="Nenhuma">Nenhuma / Já corrigido</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="doseCorrecao">Dose (t/ha)</label>
+                        <input type="number" step="0.1" id="doseCorrecao" placeholder="Ex: 2.5">
+                    </div>
+                </div>
+
+                <div class="secao-form">
+                    <i class="fas fa-flask"></i> Adubação e Fertilização
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="formulacaoNPK">Formulação NPK (Plantio)</label>
+                        <input type="text" id="formulacaoNPK" placeholder="Ex: 02-20-20" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="doseNPK">Dose NPK (kg/ha)</label>
+                        <input type="number" id="doseNPK" placeholder="Ex: 350" required>
+                    </div>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="adubacaoFoliar">Aplicação Foliar (Micronutrientes / Bioestimulantes)</label>
+                    <input type="text" id="adubacaoFoliar" placeholder="Ex: Cobalto + Molibdênio (CoMo) em V3">
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    <i class="fas fa-save"></i> Guardar Histórico Nutricional
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('formNutricao').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // Recolhe os valores
+            const dadosNutri = {
+                dataAplicacao: document.getElementById('dataAplicacao').value,
+                talhao: document.getElementById('talhao').value,
+                tipoCorrecao: document.getElementById('tipoCorrecao').value,
+                doseCorrecao: document.getElementById('doseCorrecao').value,
+                formulacaoNPK: document.getElementById('formulacaoNPK').value,
+                doseNPK: document.getElementById('doseNPK').value,
+                adubacaoFoliar: document.getElementById('adubacaoFoliar').value
+            };
+
+            // Guarda no 'caderninho' do navegador
+            localStorage.setItem('dadosNutricao', JSON.stringify(dadosNutri));
+
+            alert("Operação Nutricional guardada com sucesso! 🚜🌱");
+            
+            // Redireciona para o Dashboard
+            window.location.href = 'index.html'; 
+        });
+    </script>
+</body>
+</html>

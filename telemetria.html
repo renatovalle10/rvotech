@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Telemetria e Máquinas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O NOSSO ESTILO CLEAN E CALMO
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; }
+
+        .card-formulario {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+        }
+
+        .grupo-campo { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .grupo-campo label { font-weight: 600; color: #34495e; margin-bottom: 8px; font-size: 14px; }
+        .grupo-campo input, .grupo-campo select { padding: 12px 15px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 15px; color: #2c3e50; background-color: #f9fbfd; transition: border-color 0.3s ease; font-family: inherit;}
+        .grupo-campo input:focus, .grupo-campo select:focus { outline: none; border-color: #3498db; background-color: #ffffff; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
+
+        .linha-form { display: flex; gap: 20px; }
+        .linha-form .grupo-campo { flex: 1; }
+
+        .secao-form {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eaf2f8;
+            color: #2980b9;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .secao-form i { margin-right: 10px; color: #3498db; }
+
+        /* CAIXA DE RESULTADO DA PERDA DE COLHEITA */
+        .resultado-perda {
+            background-color: #f9fbfd;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resultado-perda h4 { margin: 0; color: #34495e; font-size: 15px; }
+        .resultado-perda .valor-kg { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .badge-status { padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold; color: white; }
+
+        .btn-salvar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-salvar:hover { background-color: #219653; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html" class="ativo"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Telemetria e Conferência de Colheita</h2>
+        <p class="subtitulo">Monitoramento de maquinário e cálculo de perdas (Smart Farming).</p>
+
+        <div class="card-formulario">
+            <form id="formTelemetria">
+                
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="dataOperacao">Data da Operação</label>
+                        <input type="date" id="dataOperacao" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="idMaquina">ID Máquina / Modelo</label>
+                        <input type="text" id="idMaquina" placeholder="Ex: Colheitadeira JD S760" required>
+                    </div>
+                </div>
+
+                <div class="secao-form">
+                    <i class="fas fa-cogs"></i> Checklist Operacional (Colheita)
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="velocidade">Velocidade de Avanço (Alvo 5 a 6,5 km/h)</label>
+                        <input type="number" step="0.1" id="velocidade" placeholder="Ex: 5.5" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="umidade">Umidade do Grão</label>
+                        <select id="umidade" required>
+                            <option value="">Selecione...</option>
+                            <option value="Seco">Seco (Duro/Quebradiço)</option>
+                            <option value="Úmido">Úmido (Emborrachado)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label>Altura de Corte Ajustada?</label>
+                        <select id="alturaCorte" required>
+                            <option value="Sim">Sim, ajustada</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Molinete Regulado?</label>
+                        <select id="molinete" required>
+                            <option value="Sim">Sim, regulado</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="secao-form">
+                    <i class="fas fa-calculator"></i> Calculadora de Perdas (1m²)
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="perdaNatural">Grãos - Perda Natural (Média)</label>
+                        <input type="number" id="perdaNatural" placeholder="Ex: 10" oninput="calcularPerda()">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="perdaTotal">Grãos - Perda Total (Média Máquina)</label>
+                        <input type="number" id="perdaTotal" placeholder="Ex: 50" oninput="calcularPerda()">
+                    </div>
+                </div>
+
+                <div class="resultado-perda">
+                    <div>
+                        <h4>Resultado da Conversão</h4>
+                        <span style="font-size: 13px; color: #7f8c8d;">(Média Máquina - Natural) x 1,5</span>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="valor-kg" id="resultadoKgHa">0</span> <span style="color: #7f8c8d;">kg/ha</span><br>
+                        <span id="badgeDiagnostico" class="badge-status" style="background-color: #bdc3c7;">Aguardando dados</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    <i class="fas fa-satellite-dish"></i> Transmitir Dados de Telemetria
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // FUNÇÃO QUE FAZ O CÁLCULO BASEADO NO SEU PDF!
+        function calcularPerda() {
+            const perdaNatural = parseFloat(document.getElementById('perdaNatural').value) || 0;
+            const perdaTotal = parseFloat(document.getElementById('perdaTotal').value) || 0;
+            
+            let perdaMaquina = perdaTotal - perdaNatural;
+            if (perdaMaquina < 0) perdaMaquina = 0; // Não existe perda negativa
+
+            // Conversão do PDF do Renato (x 1,5)
+            const kgHectare = perdaMaquina * 1.5;
+            
+            document.getElementById('resultadoKgHa').innerText = kgHectare.toFixed(1);
+
+            // Tabela de Referência do PDF
+            const badge = document.getElementById('badgeDiagnostico');
+            if (kgHectare === 0) {
+                badge.innerText = "Aguardando dados";
+                badge.style.backgroundColor = "#bdc3c7";
+            } else if (kgHectare <= 60) {
+                badge.innerText = "IDEAL";
+                badge.style.backgroundColor = "#27ae60"; // Verde
+            } else if (kgHectare <= 120) {
+                badge.innerText = "ATENÇÃO";
+                badge.style.backgroundColor = "#f39c12"; // Laranja
+            } else {
+                badge.innerText = "PREJUÍZO ALTO";
+                badge.style.backgroundColor = "#e74c3c"; // Vermelho
+            }
+        }
+
+        // SALVAR DADOS NO NAVEGADOR
+        document.getElementById('formTelemetria').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const dadosTelemetria = {
+                dataOperacao: document.getElementById('dataOperacao').value,
+                idMaquina: document.getElementById('idMaquina').value,
+                velocidade: document.getElementById('velocidade').value,
+                perdaKgHa: document.getElementById('resultadoKgHa').innerText,
+                statusPerda: document.getElementById('badgeDiagnostico').innerText
+            };
+
+            localStorage.setItem('dadosTelemetria', JSON.stringify(dadosTelemetria));
+
+            alert("Dados da máquina transmitidos com sucesso! 🚜🛰️");
+            window.location.href = 'index.html'; 
+        });
+    </script>
+</body>
+</html>

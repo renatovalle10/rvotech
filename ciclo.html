@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Ciclo Vegetativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O MESMO ESTILO CLEAN (AZUL CLARO E BRANCO)
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        .container h2 { color: #2c3e50; margin-bottom: 5px; font-size: 28px; font-weight: 600; }
+        .container p.subtitulo { color: #7f8c8d; margin-bottom: 30px; font-size: 16px; }
+
+        /* =========================================
+           ESTILOS DO FORMULÁRIO (CLEAN)
+        ========================================= */
+        .card-formulario {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+        }
+
+        .grupo-campo { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .grupo-campo label { font-weight: 600; color: #34495e; margin-bottom: 8px; font-size: 14px; }
+        .grupo-campo input, .grupo-campo select { padding: 12px 15px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 15px; color: #2c3e50; background-color: #f9fbfd; transition: border-color 0.3s ease; font-family: inherit; }
+        .grupo-campo input:focus, .grupo-campo select:focus { outline: none; border-color: #3498db; background-color: #ffffff; box-shadow: 0 0 5px rgba(52, 152, 219, 0.2); }
+
+        .linha-form { display: flex; gap: 20px; }
+        .linha-form .grupo-campo { flex: 1; }
+
+        .btn-salvar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-salvar:hover { background-color: #219653; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html" class="ativo"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h2>Registo do Ciclo Vegetativo</h2>
+        <p class="subtitulo">Acompanhamento do plantio e evolução fenológica da cultura.</p>
+
+        <div class="card-formulario">
+            <form id="formCiclo">
+                
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="dataPlantio">Data Real do Plantio</label>
+                        <input type="date" id="dataPlantio" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="cultivar">Variedade / Cultivar</label>
+                        <input type="text" id="cultivar" placeholder="Ex: Brasmax Bônus, Monsoy..." required>
+                    </div>
+                </div>
+
+                <div class="linha-form">
+                    <div class="grupo-campo">
+                        <label for="inoculacao">Tratamento / Inoculação da Semente</label>
+                        <input type="text" id="inoculacao" placeholder="Ex: Bradyrhizobium + Azospirillum" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="estande">Conferência de Estande (Plantas/ha)</label>
+                        <input type="number" id="estande" placeholder="Ex: 277777" required>
+                    </div>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="faseAtual">Fase Fenológica Atual</label>
+                    <select id="faseAtual" required>
+                        <option value="">Selecione a fase da lavoura...</option>
+                        <optgroup label="Emergência e Vegetativo (V)">
+                            <option value="VE - Emergência">VE - Emergência</option>
+                            <option value="VC - Cotilédone">VC - Cotilédone</option>
+                            <option value="V1 a V3 - Desenvolvimento Inicial">V1 a V3 - Desenvolvimento Inicial</option>
+                            <option value="V4 a V6 - Fechamento de Dossel">V4 a V6 - Fechamento de Dossel</option>
+                        </optgroup>
+                        <optgroup label="Reprodutivo (R)">
+                            <option value="R1 - Início do Florescimento">R1 - Início do Florescimento</option>
+                            <option value="R3 - Início das Vagens">R3 - Início das Vagens</option>
+                            <option value="R5 - Enchimento de Grãos">R5 - Enchimento de Grãos</option>
+                            <option value="R7 a R8 - Maturação e Colheita">R7 a R8 - Maturação e Colheita</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    <i class="fas fa-save"></i> Guardar Dados do Ciclo
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('formCiclo').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // 1. Recolhe os valores
+            const dadosCiclo = {
+                dataPlantio: document.getElementById('dataPlantio').value,
+                cultivar: document.getElementById('cultivar').value,
+                inoculacao: document.getElementById('inoculacao').value,
+                estande: document.getElementById('estande').value,
+                faseAtual: document.getElementById('faseAtual').value
+            };
+
+            // 2. Guarda na memória do navegador
+            localStorage.setItem('dadosCiclo', JSON.stringify(dadosCiclo));
+
+            // 3. Alerta de sucesso
+            alert("Registo do ciclo vegetativo guardado com sucesso! 🌱");
+
+            // 4. Se quisermos que também apareça no dashboard mais tarde, a lógica base já cá está!
+            // Por agora, redireciona para a página inicial.
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

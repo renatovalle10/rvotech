@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RVO TECH - Relatório Consolidado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* =========================================
+           O NOSSO ESTILO CLEAN E CALMO
+        ========================================= */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #2c3e50; }
+        header { background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid #e1e8ed; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        header h1 { margin: 0; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        header .destaque-h1 { color: #3498db; }
+        header img { max-height: 45px; width: auto; border-radius: 50%; }
+        
+        nav { background-color: #ffffff; display: flex; justify-content: center; flex-wrap: wrap; padding: 10px; border-bottom: 3px solid #3498db; }
+        nav a { color: #5d6d7e; text-decoration: none; margin: 4px 6px; padding: 8px 16px; border-radius: 20px; font-weight: 500; font-size: 14px; transition: all 0.2s ease; display: flex; align-items: center; }
+        nav a i { margin-right: 6px; font-size: 15px; color: #aab7c4; }
+        nav a:hover, nav a.ativo { background-color: #eaf2f8; color: #2980b9; }
+        nav a:hover i, nav a.ativo i { color: #3498db; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 40px; text-align: center; }
+        
+        /* ESTILO DA FOLHA DE RELATÓRIO TIPO A4 */
+        .folha-relatorio {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e1e8ed;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .cabecalho-relatorio {
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .cabecalho-relatorio h2 { margin: 0; color: #2c3e50; font-size: 28px; }
+        .cabecalho-relatorio p { margin: 5px 0 0 0; color: #7f8c8d; }
+
+        .secao-relatorio { margin-bottom: 35px; }
+        .secao-relatorio h3 {
+            color: #3498db;
+            font-size: 18px;
+            border-bottom: 1px dashed #bdc3c7;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .secao-relatorio h3 i { margin-right: 10px; color: #2980b9; }
+
+        .linha-dado {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f3f4;
+            font-size: 15px;
+        }
+        .linha-dado:last-child { border-bottom: none; }
+        .label-dado { font-weight: 600; color: #5d6d7e; }
+        .valor-dado { font-weight: bold; color: #2c3e50; }
+
+        .alerta-relatorio { background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border-left: 5px solid #ffeeba; margin-top: 20px; font-size: 14px; }
+
+        /* BOTÃO DE IMPRESSÃO */
+        .btn-imprimir {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-imprimir:hover { background-color: #1a252f; }
+
+        /* MAGIA DO CSS: Ocultar elementos na hora de imprimir! */
+        @media print {
+            body { background-color: white; }
+            header, nav, .btn-imprimir { display: none !important; }
+            .container { margin: 0; max-width: 100%; padding: 0; }
+            .folha-relatorio { box-shadow: none; border: none; padding: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RVO <span class="destaque-h1">TECH</span></h1>
+        <img src="logo.png" alt="Distintivo RVO Agro">
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i>Dashboard Central</a>
+        <a href="preplantio.html"><i class="fas fa-seedling"></i>Pré-Plantio</a>
+        <a href="ciclo.html"><i class="fas fa-sprout"></i>Ciclo</a>
+        <a href="estimativa.html"><i class="fas fa-chart-line"></i>Estimativa</a>
+        <a href="nutri.html"><i class="fas fa-leaf"></i>Nutrição</a>
+        <a href="mip.html"><i class="fas fa-search-plus"></i>Manejo (MIP)</a>
+        <a href="pluvi.html"><i class="fas fa-cloud-showers-heavy"></i>Pluviômetro</a>
+        <a href="telemetria.html"><i class="fas fa-tractor"></i>Máquinas</a>
+        <a href="ia.html"><i class="fas fa-brain"></i>Assistente IA</a>
+        <a href="relatorios.html" class="ativo"><i class="fas fa-file-contract"></i>Relatórios</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="folha-relatorio" id="documentoRelatorio">
+            
+            <div class="cabecalho-relatorio">
+                <div>
+                    <h2>Fecho de Safra - Consolidado</h2>
+                    <p>Relatório Gerado Automáticamente pela Plataforma RVO Tech</p>
+                </div>
+                <div style="text-align: right;">
+                    <strong>Fazenda:</strong> Catarinense<br>
+                    <span id="dataAtual"></span>
+                </div>
+            </div>
+
+            <div class="secao-relatorio">
+                <h3><i class="fas fa-seedling"></i> 1. Operação Inicial</h3>
+                <div class="linha-dado">
+                    <span class="label-dado">Talhão Processado:</span>
+                    <span class="valor-dado" id="r-talhao">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Sistema de Cultivo:</span>
+                    <span class="valor-dado" id="r-sistema">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Data de Plantio Real:</span>
+                    <span class="valor-dado" id="r-plantio">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Cultivar Utilizada:</span>
+                    <span class="valor-dado" id="r-cultivar">A aguardar dados...</span>
+                </div>
+            </div>
+
+            <div class="secao-relatorio">
+                <h3><i class="fas fa-flask"></i> 2. Histórico Nutricional e MIP</h3>
+                <div class="linha-dado">
+                    <span class="label-dado">Correção de Base (Calcário/Gesso):</span>
+                    <span class="valor-dado" id="r-correcao">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Adubação NPK:</span>
+                    <span class="valor-dado" id="r-npk">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Último Registo MIP (Alvo):</span>
+                    <span class="valor-dado" id="r-alvo">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Estatuto de Pragas (Nível):</span>
+                    <span class="valor-dado" id="r-risco">A aguardar dados...</span>
+                </div>
+            </div>
+
+            <div class="secao-relatorio">
+                <h3><i class="fas fa-chart-pie"></i> 3. Fecho Operacional e Estimativas</h3>
+                <div class="linha-dado">
+                    <span class="label-dado">Volume de Chuva (Última Leitura):</span>
+                    <span class="valor-dado" id="r-chuva" style="color: #3498db;">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado">
+                    <span class="label-dado">Perda na Colheita (Telemetria):</span>
+                    <span class="valor-dado" id="r-perda">A aguardar dados...</span>
+                </div>
+                <div class="linha-dado" style="background-color: #f1f8e9; padding: 15px 10px; border-radius: 4px; margin-top: 10px;">
+                    <span class="label-dado" style="color: #27ae60; font-size: 16px;">PRODUTIVIDADE ESTIMADA (sc/ha):</span>
+                    <span class="valor-dado" id="r-sacas" style="color: #27ae60; font-size: 20px;">0.00 sc/ha</span>
+                </div>
+            </div>
+
+            <div class="alerta-relatorio">
+                <i class="fas fa-info-circle"></i> <strong>Nota Técnica RVO:</strong> Este documento compila os registos lançados em campo. Recomendamos cruzar o valor de Produtividade Estimada com o mapa de vigor (NDVI) para planear a agricultura de precisão da próxima safra.
+            </div>
+
+        </div>
+
+        <button class="btn-imprimir" onclick="window.print()">
+            <i class="fas fa-file-pdf"></i> Imprimir / Guardar como PDF
+        </button>
+
+    </div>
+
+    <script>
+        // Função para carregar tudo o que foi guardado na plataforma
+        window.onload = function() {
+            // Data atual para o cabeçalho do documento
+            const dataHoje = new Date();
+            document.getElementById('dataAtual').innerText = "Gerado a: " + dataHoje.toLocaleDateString('pt-PT');
+
+            // 1. Tentar ler os dados de Pré-Plantio
+            const dPre = JSON.parse(localStorage.getItem('dadosPrePlantio'));
+            if(dPre) {
+                document.getElementById('r-talhao').innerText = dPre.talhao;
+                document.getElementById('r-sistema').innerText = dPre.sistemaCultivo;
+            }
+
+            // 2. Tentar ler os dados do Ciclo
+            const dCiclo = JSON.parse(localStorage.getItem('dadosCiclo'));
+            if(dCiclo) {
+                document.getElementById('r-plantio').innerText = dCiclo.dataPlantio;
+                document.getElementById('r-cultivar').innerText = dCiclo.cultivar;
+            }
+
+            // 3. Tentar ler Nutrição
+            const dNutri = JSON.parse(localStorage.getItem('dadosNutricao'));
+            if(dNutri) {
+                document.getElementById('r-correcao').innerText = dNutri.tipoCorrecao !== 'Nenhuma' ? dNutri.tipoCorrecao + " (" + dNutri.doseCorrecao + " t/ha)" : 'Nenhuma';
+                document.getElementById('r-npk').innerText = dNutri.formulacaoNPK + " (" + dNutri.doseNPK + " kg/ha)";
+            }
+
+            // 4. Tentar ler MIP
+            const dMIP = JSON.parse(localStorage.getItem('dadosMIP'));
+            if(dMIP) {
+                document.getElementById('r-alvo').innerText = dMIP.tipoAlvo + " - " + dMIP.nomeAlvo;
+                document.getElementById('r-risco').innerText = dMIP.nivelInfestacao;
+            }
+
+            // 5. Tentar ler Pluviómetro
+            const dPluvi = JSON.parse(localStorage.getItem('dadosPluvi'));
+            if(dPluvi) {
+                document.getElementById('r-chuva').innerText = dPluvi.volumeMM + " mm (" + dPluvi.intensidade + ")";
+            }
+
+            // 6. Tentar ler Telemetria (Máquinas)
+            const dTele = JSON.parse(localStorage.getItem('dadosTelemetria'));
+            if(dTele) {
+                document.getElementById('r-perda').innerText = dTele.perdaKgHa + " kg/ha [" + dTele.statusPerda + "]";
+            }
+
+            // 7. Tentar ler a Estimativa de Produtividade
+            const dEst = JSON.parse(localStorage.getItem('dadosEstimativa'));
+            if(dEst) {
+                document.getElementById('r-sacas').innerText = dEst.produtividadeSacas + " sc/ha";
+            }
+        };
+    </script>
+</body>
+</html>
