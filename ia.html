@@ -181,6 +181,8 @@
 
     </div>
 
+    <script src="conhecimento.js"></script>
+
     <script>
         // FUNÇÃO PARA ENVIAR A MENSAGEM DO USUÁRIO
         function enviarMensagem() {
@@ -188,20 +190,13 @@
             const mensagem = campoTexto.value.trim();
 
             if (mensagem !== "") {
-                // 1. Cria o balão azul com a mensagem do usuário
                 adicionarBalao(mensagem, 'mensagem-usuario');
-                
-                // Limpa o campo de texto
                 campoTexto.value = "";
-
-                // 2. Mostra que a IA está "pensando"
+                
                 const indicador = document.getElementById('indicadorDigitando');
                 indicador.style.display = 'block';
-
-                // Rola o chat para o final
                 rolarParaOFinal();
 
-                // 3. Simula um atraso de 1.5 segundos para a IA responder
                 setTimeout(function() {
                     responderIA(mensagem);
                     indicador.style.display = 'none';
@@ -209,38 +204,32 @@
             }
         }
 
-        // Permite enviar apertando a tecla ENTER
         function verificarEnter(event) {
             if (event.key === "Enter") {
                 enviarMensagem();
             }
         }
 
-        // FUNÇÃO QUE SIMULA A RESPOSTA DA IA
+        // 🧠 O CÉREBRO DA IA BUSCANDO NO ARQUIVO EXTERNO
         function responderIA(perguntaUsuario) {
-            perguntaUsuario = perguntaUsuario.toLowerCase();
-            let resposta = "";
+            const perguntaLimpa = perguntaUsuario.toLowerCase();
+            let respostaFinal = "Interessante... Sugiro cruzarmos essa informação com o mapa de NDVI. Quer que eu gere um relatório completo?";
 
-            // Lógica simples de palavras-chave para fingir inteligência
-            if (perguntaUsuario.includes("produtividade") || perguntaUsuario.includes("sacas") || perguntaUsuario.includes("estimativa")) {
-                resposta = "Analisando o histórico de NDVI e a última biometria lançada, a projeção atual para a Zona de Alto Vigor do Talhão 250 é de 72 sc/ha. A estimativa total está próxima de 7.995 sacas. Recomendo manter o monitoramento de pragas na bordadura.";
-            } 
-            else if (perguntaUsuario.includes("chuva") || perguntaUsuario.includes("clima") || perguntaUsuario.includes("pluviômetro")) {
-                resposta = "Notei um volume recente acumulado. Se a umidade do grão passar do ponto ideal (seco/quebradiço), podemos ter problemas de perda na plataforma da colheitadeira. Mantenha a velocidade de avanço entre 5 e 6,5 km/h.";
-            }
-            else if (perguntaUsuario.includes("perda") || perguntaUsuario.includes("colheita") || perguntaUsuario.includes("máquina")) {
-                resposta = "Se o cálculo de perdas passar de 60 kg/ha, o sistema entra em alerta amarelo. Geralmente, perdas à frente da barra de corte indicam a necessidade de ajustar o molinete ou a velocidade do trator.";
-            }
-            else {
-                resposta = "Interessante... Como seus dados de campo estão sendo processados agora, sugiro cruzarmos essa informação com o mapa de NDVI que temos no Dashboard. Quer que eu gere um relatório de cruzamento de dados?";
+            // A variável 'bancoDeConhecimento' vem lá do arquivo conhecimento.js!
+            for (let i = 0; i < bancoDeConhecimento.length; i++) {
+                let item = bancoDeConhecimento[i];
+                let encontrouPalavra = item.palavras.some(palavra => perguntaLimpa.includes(palavra));
+                
+                if (encontrouPalavra) {
+                    respostaFinal = item.resposta;
+                    break;
+                }
             }
 
-            // Cria o balão branco com a resposta
-            adicionarBalao(resposta, 'mensagem-ia');
+            adicionarBalao(respostaFinal, 'mensagem-ia');
             rolarParaOFinal();
         }
 
-        // Função auxiliar para desenhar o balão de texto na tela
         function adicionarBalao(texto, classeTipo) {
             const caixaMensagens = document.getElementById('caixaMensagens');
             const novoBalao = document.createElement('div');
@@ -249,11 +238,12 @@
             caixaMensagens.appendChild(novoBalao);
         }
 
-        // Função auxiliar para manter o scroll sempre na última mensagem
         function rolarParaOFinal() {
             const caixaMensagens = document.getElementById('caixaMensagens');
             caixaMensagens.scrollTop = caixaMensagens.scrollHeight;
         }
     </script>
+</body>
+</html>
 </body>
 </html>
